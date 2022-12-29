@@ -25,25 +25,44 @@ app = Dash(
     suppress_callback_exceptions=True
 )
 
-app.layout = html.Div([ 
+# app.layout = html.Div([ 
+#     create_header(app),
+#     html.Div([
+#         create_expression_input(app),
+#         html.Div([
+#             create_main_application(app),
+#             create_contour_settings(app),
+#         ], className='app-body-container')
+#     ], className='app-container'),
+#     dcc.Store(id='plots', data = {})
+# ])
+
+app.layout = html.Div([
     create_header(app),
     html.Div([
-        create_expression_input(app),
-        dls.Ellipsis(html.Div(id='loading-ellipsis', className='ellipsis'), color='white', width=40, debounce=100),
+        dcc.Input(type='text', placeholder='Enter an expression', className='expression-input'),
+        html.Button('Calculate', id='calculate-btn', className='calculate-btn')
+    ],className='expression-input-container'),
+    html.Div([
         html.Div([
-            create_main_application(app),
-            create_contour_settings(app),
-        ], className='app-body-container')
-    ], className='app-container'),
-    dcc.Store(id='plots', data = {})
-])
+            html.Div([], className='toggles-container'),
+            html.Div([dcc.Graph(id='plot', className='contour-plot')], className='contour-plot-container'),
+        ], className='plot-toggles-container'),
+        html.Div([
+            html.Div([], className='left-side-settings'),
+            html.Div([], className='right-side-settings')
+        ], className='settings-container')
+    ], className='main-app-container'),
+    html.Div([
+        'footer'
+    ], className='footer-container')       
+], className='app-container')
 
 """
 Callbacks
 """
 
 @app.callback(Output(component_id='contour-plot', component_property='figure'),
-              Output(component_id='loading-ellipsis', component_property='children'),
               Output(component_id='plots', component_property='data'),
               Input(component_id='zmatrix-btn', component_property='n_clicks'),
               Input(component_id='colorscale-dropdown', component_property='value'),
@@ -133,7 +152,7 @@ def recalculate_contour(btn_click, colorscale, start, stop, step, smoothness, cu
         plots.update({'2d': fig_2d.to_json(),
                       '3d': fig_3d.to_json()})
 
-        return fig_2d, [], plots
+        return fig_2d, plots
 
     # print(json.dumps(current_plot['data'][0]['line']['smoothing'], indent=3))
 
@@ -152,7 +171,7 @@ def recalculate_contour(btn_click, colorscale, start, stop, step, smoothness, cu
 
         compute_gradient(expression, x_range, y_range, 3, 1, accuracy)
 
-        return current_plot, [], plots
+        return current_plot, plots
 
     if component_triggered == 'change-start' and start is not None:
         current_plot['data'][0]['contours']['start'] = start
@@ -169,7 +188,7 @@ def recalculate_contour(btn_click, colorscale, start, stop, step, smoothness, cu
     if component_triggered == 'smoothing-step-slider':
         current_plot['data'][0]['line']['smoothing'] = smoothness
 
-    return current_plot, [], plots
+    return current_plot, plots
 
 """
 Entry point into the application

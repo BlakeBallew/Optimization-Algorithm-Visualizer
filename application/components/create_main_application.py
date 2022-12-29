@@ -30,9 +30,8 @@ def create_main_application(app: Dash) -> html.Div:
                     daq.BooleanSwitch(on=False)
                 ])                
             ], className='coordinate-3d-container')
-
-
         ], className='algorithm-toggles-container'),
+        
         html.Div([
             dcc.Graph(className='contour-plot', id='contour-plot')
         ], className='contour-plot-container')
