@@ -1,0 +1,305 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+/* APPLICATION-WIDE */
+
+body {
+    background-color: #2e323b;
+    margin: 0px;
+    font-family: 'Lato', sans-serif;
+}
+
+H3, a {
+    color: lightgray;
+}
+
+/* HEADER */
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 3vw;
+    padding-right: 3vw;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    background-color: #212329;
+}
+
+.title {
+    font-weight: lighter;
+    font-size: 1.3rem;
+    color: rgb(239, 239, 239);
+}
+
+.header-nav-link {
+    padding: 5px;
+    border: 2px solid gray;
+    border-radius: 6px;
+    font-weight: lighter;
+    font-size: 1rem;
+}
+
+.header-nav-link:hover {
+    border: 2px solid rgb(168, 168, 168);
+    cursor: pointer;
+}
+
+.header-nav-link > a {
+    text-decoration: none;
+}
+
+.nav-links-container {
+    display: flex;
+    justify-content: space-between;
+    width: 20vw;
+    max-width: 400px;
+}
+
+/* PLOT AND TOGGLES */
+
+.app-container {
+    display: table;
+    margin: 0 auto;
+    height: 80vh;
+    width: 65vw;
+    padding-top: 8vh;
+}
+
+.app-body-container {
+    margin-top: 35px;
+    width: 100%;
+    height: 100%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background-color: #212329;
+}
+
+.plot-and-toggles-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 80%;
+}
+
+/* EXPRESSION INPUT */
+
+.expression-input-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 30px;
+}
+
+.expression-input {
+    width: 85%;
+    height: 100%;
+    border-radius: 7px;
+    box-shadow: none;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    padding-left: 7px;
+}
+
+.recalculate-btn-container {
+    width: 13%;
+    height: 105%;
+    background-color: #2186F4;
+    border-radius: 7px;
+    min-width: 100px;
+}
+
+.recalculate-zmatrix-button {
+    width: 13%;
+    height: 105%;
+    background-color: #2186F4;
+    border-radius: 7px;
+    min-width: 100px;
+    border: none;
+    color: white;
+    font-size: 0.94rem;
+}
+
+.recalculate-zmatrix-button:hover {
+    cursor: pointer;
+}
+
+.ellipsis {
+    border: none;
+    width: 100%;
+}
+
+/* TOGGLES */
+
+.algorithm-settings-title {
+    padding-left: 5%;
+    font-weight: lighter;
+}
+
+.algorithm-toggles-container {
+    width: 40%;
+    padding-left: 4%;
+    padding-top: 3%;
+}
+
+.algorithm-dropdown-container {
+    width: 70%;
+}
+
+.algorithm-toggles-label {
+    color: lightgray;
+    margin-bottom: 2%;
+}
+
+.toggles-label {
+    color: lightgray;
+    margin-top: 10px;
+    margin-bottom: 7px;
+}
+
+.coordinate-3d-container {
+    width: 65%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.starting-point-input-container {
+    width: 60%;
+    color: lightgray;
+}
+
+.coordinate-input-container {
+    display: flex;
+    width: 100%;
+}
+
+.coordinate-input {
+    padding: 2px 0px 2px 6px;
+    margin-left: 7px;
+    width: 85%;
+    font-size: 1rem;
+    border-radius: 5px;
+    margin-bottom: 3px;
+    border: none;
+}
+
+/* CONTOUR PLOT */
+
+.contour-plot-container {
+    width: 60%;
+    padding-top: 2px;
+    padding-right: 2px;
+}
+
+.contour-plot {
+    display: block;
+    overflow: auto;
+}
+
+/* CONTOUR PLOT SETTINGS */
+
+.app-settings {
+    background-color: #1a1b20;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    padding-top: 3vh;
+    padding-bottom: 5vh;
+    margin-top: 1vh;
+}
+
+.app-settings-container {
+    padding-top: 3vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.settings-title {
+    color: lightgray;
+    font-size: 1.2rem;
+    padding-left: 5%;
+    padding-bottom: 1vh;
+}
+
+.setting-label {
+    padding-left: 8%;
+    padding-bottom: 5px;
+    color: lightgray;
+}
+
+.left-side-controls {
+    width: 50%;
+}
+
+.right-side-controls {
+    width: 50%;
+}
+
+.colorscale-dropdown-container {
+    padding-left: 8%;
+}
+
+.dropdown {
+    width: 60%;
+}
+
+.step-slider-container {
+    padding-left: 4%;
+}
+
+.step-slider {
+    width: 70%;
+    color: darkslategray;
+}
+
+.rc-slider-track {
+    background-color: darkslategray;
+}
+
+.rc-slider-rail {
+    background-color: black;
+}
+
+.rc-slider-dot, .rc-slider-dot-active{
+    background-color: darkslategray;
+    border: 2px solid lightgray;
+}
+
+.rc-slider-handle {
+    background-color: darkslategray;
+    border: 2px solid lightgray;
+}
+
+.rc-slider-mark-text, .rc-slider-mark-text-active {
+    color: lightgray;
+}
+
+.start-stop-step-container {
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 8%;
+    width: 60%;
+}
+
+.start-stop-step-element > Div {
+    color: lightgray;
+    padding-bottom: 5px;
+}
+
+.start-stop-step-element > Input {
+    width: 60%;
+}
+
+.sc-bxivhb, .gJuplL, .daq-booleanswitch--light__background {
+    background: black !important;
+    border: none !important;
+    /* height: 18px !important;
+    width: 40px !important; */
+}
+
+.sc-ifAKCX, .dlqMgb, .daq-booleanswitch--light__button {
+    background: darkslategray !important;
+    border: 1px solid !important;
+    /* height: 17px !important;
+    width: 17px !important; */
+}
