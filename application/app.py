@@ -40,22 +40,36 @@ app = Dash(
 app.layout = html.Div([
     create_header(app),
     html.Div([
-        dcc.Input(type='text', placeholder='Enter an expression', className='expression-input'),
-        html.Button('Calculate', id='calculate-btn', className='calculate-btn')
+        dcc.Input(type='text', className='expression-input', value='x^2+y^2', id='user-expression'),
+        html.Button('Calculate', id='zmatrix-btn', className='calculate-btn')
     ],className='expression-input-container'),
-    html.Div([
+    html.Section([
         html.Div([
-            html.Div([], className='toggles-container'),
-            html.Div([dcc.Graph(id='plot', className='contour-plot')], className='contour-plot-container'),
+            html.Div([
+
+                html.H3('Algorithm Configurations', className='algo-config-title'),
+                # html.H4('Choose optimization algorithm', className='algorithm-toggles-label'),
+                dcc.Dropdown([
+                    'Gradient Descent',
+                    'BFGS',
+                ], value='Gradient Descent', clearable=False, maxHeight=100, id='algo-dropdown')
+
+            ], className='toggles-container'),
+            html.Div([dcc.Graph(className='contour-plot', id='contour-plot')], className='contour-plot-container'),
         ], className='plot-toggles-container'),
         html.Div([
-            html.Div([], className='left-side-settings'),
-            html.Div([], className='right-side-settings')
+
+            create_contour_settings(app)
+
+
+            # html.Div([], className='left-side-settings'),
+            # html.Div([], className='right-side-settings')
         ], className='settings-container')
     ], className='main-app-container'),
-    html.Div([
+    html.Footer([
         'footer'
-    ], className='footer-container')       
+    ], className='footer-container'),
+    dcc.Store(id='plots', data = {})       
 ], className='app-container')
 
 """
@@ -97,7 +111,7 @@ def recalculate_contour(btn_click, colorscale, start, stop, step, smoothness, cu
             'tickfont_size': 12,
         }
         layout_2d = {
-            'margin': {'t': 30, 'b': 30, 'pad': 5}, 
+            'margin': {'t': 30, 'b': 0, 'l': 0}, 
             'plot_bgcolor': '#212329',
             'paper_bgcolor': '#212329',
             'font': {'color': 'white'},

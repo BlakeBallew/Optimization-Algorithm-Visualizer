@@ -11,16 +11,21 @@ settings: #1a1b20
 
 */
 
+* {
+    margin: 0;
+}
+
 body {
     background-color: #2e323b;
     color: white;
-    margin: 0;
     font-family: 'Lato', sans-serif;
     font-weight: lighter;
 }
 
-h3 {
+h2, h3, h4, h5, a {
     font-weight: lighter;
+    color: whitesmoke;
+    text-decoration: none;
 }
 
 .app-container {
@@ -35,9 +40,8 @@ h3 {
 .header-container {
     background-color: #212329;
     grid-area: 1 / 1 / 1 / 4;
-    padding-left: 30px;
-    padding-right: 30px;
-    border: 1px solid red;
+    padding-left: 20%;
+    padding-right: 20%;
     display: inline-grid;
     grid-template-rows: calc((100% - 20px) / 2) 20px calc((100% - 20px) / 2);
 }
@@ -46,13 +50,13 @@ h3 {
     display: flex;
     justify-content: space-between;
     grid-row: 2 / 2;
-    border: 1px solid red;
 }
 
 .nav-links-container {
     display: flex;
     justify-content: space-around;
     width: 30%;
+    min-width: 300px;
 }
 
 .expression-input-container {
@@ -66,12 +70,20 @@ h3 {
     border-radius: 5px;
     border: none;
     padding-left: 5px;
+    font-size: 1rem;
 }
 
 .calculate-btn {
     grid-area: 2 / 3 / 2 / 3;
     border: none;
     border-radius: 5px;
+    font-size: 0.95rem;
+    color: white;
+    background-color: #2186F4;
+}
+
+.calculate-btn:hover {
+    cursor: pointer;
 }
 
 .plot-toggles-container {
@@ -82,12 +94,26 @@ h3 {
 
 .toggles-container {
     grid-area: 2 / 2 / 2 / 2;
-    border: 1px solid red;
+    display: inline-grid;
+    grid: repeat(10, 10%) / 5% 50% 45%;
+    /* border: 1px solid red; */
 }
+
+/* EXPERIMENTAL TOGGLES BEGINNING */
+
+.algo-config-title {
+    grid-area: 1 / 2 / 1 / 4;
+}
+
+#algo-dropdown {
+    grid-area: 2 / 1 / 2 / 3;
+}
+
+/* EXPERIMENTAL TOGGLES END */
+
 
 .contour-plot-container {
     grid-area: 2 / 4 / 2 / 4;
-    border: 1px solid red;
 }
 
 .contour-plot {
@@ -112,14 +138,6 @@ h3 {
 .right-side-settings {
     border: 1px solid red;
     grid-area: 2 / 4 / 2 / 4;
-}
-
-.setting-label {
-
-}
-
-.setting-control {
-
 }
 
 .main-app-container {
@@ -183,6 +201,7 @@ h3 {
 
 }
 
+/* OVERRIDING BUILT-IN DCC CLASSES */
 
 .rc-slider-track {
     background-color: darkslategray;
@@ -226,13 +245,28 @@ h3 {
 .sc-bxivhb, .gJuplL, .daq-booleanswitch--light__background {
     background: black !important;
     border: none !important;
-    /* height: 18px !important;
-    width: 40px !important; */
 }
 
 .sc-ifAKCX, .dlqMgb, .daq-booleanswitch--light__button {
     background: darkslategray !important;
     border: 1px solid !important;
-    /* height: 17px !important;
-    width: 17px !important; */
+}
+
+.Select-value {
+    background-color: black !important;
+}
+
+.Select-control {
+    border: none !important;
+    border-radius: 0px !important;
+}
+
+.Select-value-label {
+    color: white !important;
+}
+
+.Select-menu-outer {
+    background-color: #1a1b20 !important;
+    border: none !important;
+    color: white !important;
 }
