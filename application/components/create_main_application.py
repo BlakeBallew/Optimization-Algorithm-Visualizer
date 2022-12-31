@@ -4,14 +4,14 @@ import dash_daq as daq
 def create_main_application(app: Dash) -> html.Div:
     return html.Div([
         html.Div([
-            html.H3('Algorithm Configurations', className='algorithm-settings-title'),
-            html.Div('Algorithm', className='algorithm-toggles-label'),
-            html.Div([
-                dcc.Dropdown([
-                    'Gradient Descent',
-                    'BFGS',
-                ], value='Gradient Descent', clearable=False, maxHeight=100)
-            ], className='algorithm-dropdown-container'),
+            # html.H3('Algorithm Configurations', className='algorithm-settings-title'),
+            # html.Div('Algorithm', className='algorithm-toggles-label'),
+            # html.Div([
+                # dcc.Dropdown([
+                #     'Gradient Descent',
+                #     'BFGS',
+                # ], value='Gradient Descent', clearable=False, maxHeight=100)
+            # ], className='algorithm-dropdown-container'),
 
             html.Div([
                 html.Div([

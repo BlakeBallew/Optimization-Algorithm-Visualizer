@@ -11,20 +11,24 @@ settings: #1a1b20
 
 */
 
+:root {
+    --main-text-color: whitesmoke;
+}
+
 * {
     margin: 0;
 }
 
 body {
     background-color: #2e323b;
-    color: white;
+    color: var(--main-text-color);
     font-family: 'Lato', sans-serif;
     font-weight: lighter;
 }
 
 h2, h3, h4, h5, a {
     font-weight: lighter;
-    color: whitesmoke;
+    color: var(--main-text-color);
     text-decoration: none;
 }
 
@@ -33,7 +37,7 @@ h2, h3, h4, h5, a {
     height: 100vh;
     min-width: 300px;
     display: inline-grid;
-    grid: 10% 15% 90% 7% / 20% 60% 20%;
+    grid: 10% 15% 120% 7% / 20% 60% 20%;
     overflow: auto;
 }
 
@@ -78,7 +82,7 @@ h2, h3, h4, h5, a {
     border: none;
     border-radius: 5px;
     font-size: 0.95rem;
-    color: white;
+    color: var(--main-text-color);
     background-color: #2186F4;
 }
 
@@ -88,25 +92,97 @@ h2, h3, h4, h5, a {
 
 .plot-toggles-container {
     display: inline-grid;
-    grid: 10% 80% 10% / 5% 44% 2% 44% 5%;
+    grid: 0% 90% 10% / 5% 30% 2% 60% 3%;
     height: 60%;
+    /* border: 1px solid red; */
 }
 
 .toggles-container {
     grid-area: 2 / 2 / 2 / 2;
     display: inline-grid;
-    grid: repeat(10, 10%) / 5% 50% 45%;
+    grid: 7% 88% 5% / 7% 86% 7%;
     /* border: 1px solid red; */
+}
+
+.toggles {
+    grid-area: 2 / 2 / 2 / 2;
+    display: inline-grid;
+    grid: 2% 34px calc(70% - 184px) 30px 5% 30px 5% 30px 5% 30px 8% 30px 5% / 100%;
+    background-color: #2e323b;
+    border-radius: 7px;
+    padding: 10px;
 }
 
 /* EXPERIMENTAL TOGGLES BEGINNING */
 
-.algo-config-title {
-    grid-area: 1 / 2 / 1 / 4;
+#algo-dropdown {
+    grid-area: 2 / 1 / 2 / 2;
 }
 
-#algo-dropdown {
-    grid-area: 2 / 1 / 2 / 3;
+.toggles h5 {
+    display: block;
+    margin-top: auto;
+    margin-bottom: 0;
+}
+
+.toggles input {
+    background-color: #2e323b;
+    color: var(--main-text-color);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid var(--main-text-color);
+}
+
+.x-coord-input {
+    grid-area: 4 / 1 / 4 / 2;
+    display: flex;
+    justify-content: space-between;
+}
+
+.y-coord-input {
+    grid-area: 6 / 1 / 6 / 2;
+    display: flex;
+    justify-content: space-between;
+}
+
+.gradient-norm-container {
+    grid-area: 8 / 1 / 8 / 2;
+    display: flex;
+    justify-content: space-between;
+}
+
+.show-3d-toggle {
+    grid-area: 10 / 1 / 10 / 2;
+    display: flex;
+    justify-content: space-between;
+}
+
+.show-3d-text {
+    line-height: 35px;
+    height: 100%;
+}
+
+.toggle-3d {
+    display: block;
+    margin-top: auto;
+    margin-bottom: 0;
+}
+
+.step-btn {
+    grid-area: 12 / 1 / 12 / 2;
+    width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: 0;
+    background-color: #2e323b;
+    color: var(--main-text-color);
+    border: 1px solid var(--main-text-color);
+    border-radius: 5px;
+}
+
+.step-btn:hover {
+    cursor: pointer;
 }
 
 /* EXPERIMENTAL TOGGLES END */
@@ -164,7 +240,6 @@ h2, h3, h4, h5, a {
     .expression-input-container {
         display: inline-grid;
         grid: calc(85% - 80px) 35px 5px 35px 15% / 100%;
-        border: 1px solid red;
     }    
 
     .expression-input {
@@ -213,16 +288,16 @@ h2, h3, h4, h5, a {
 
 .rc-slider-dot, .rc-slider-dot-active{
     background-color: darkslategray;
-    border: 2px solid lightgray;
+    border: 2px solid var(--main-text-color);
 }
 
 .rc-slider-handle {
     background-color: darkslategray;
-    border: 2px solid lightgray;
+    border: 2px solid var(--main-text-color);
 }
 
 .rc-slider-mark-text, .rc-slider-mark-text-active {
-    color: lightgray;
+    color: var(--main-text-color);
 }
 
 .start-stop-step-container {
@@ -234,7 +309,7 @@ h2, h3, h4, h5, a {
 }
 
 .start-stop-step-element > Div {
-    color: lightgray;
+    color: var(--main-text-color);
     padding-bottom: 5px;
 }
 
@@ -252,21 +327,27 @@ h2, h3, h4, h5, a {
     border: 1px solid !important;
 }
 
+.sc-ifAKCX:hover, .dlqMgb:hover, .daq-booleanswitch--light__button:hover {
+    cursor: pointer;
+}
+
 .Select-value {
     background-color: black !important;
 }
 
 .Select-control {
     border: none !important;
-    border-radius: 0px !important;
+    border-top-left-radius: 5px !important;
+    border-top-right-radius: 5px !important;
 }
 
 .Select-value-label {
-    color: white !important;
+    color: var(--main-text-color) !important;
 }
 
 .Select-menu-outer {
-    background-color: #1a1b20 !important;
+    background-color: black !important;
     border: none !important;
-    color: white !important;
+    color: var(--main-text-color) !important;
 }
+

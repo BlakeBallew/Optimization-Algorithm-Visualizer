@@ -46,14 +46,31 @@ app.layout = html.Div([
     html.Section([
         html.Div([
             html.Div([
-
-                html.H3('Algorithm Configurations', className='algo-config-title'),
-                # html.H4('Choose optimization algorithm', className='algorithm-toggles-label'),
-                dcc.Dropdown([
-                    'Gradient Descent',
-                    'BFGS',
-                ], value='Gradient Descent', clearable=False, maxHeight=100, id='algo-dropdown')
-
+                html.Div([
+                
+                    dcc.Dropdown([
+                        'Gradient Descent',
+                        'BFGS',
+                    ], value='Gradient Descent', clearable=False, maxHeight=100, id='algo-dropdown'),
+                    html.Div([
+                        html.H5('X-Coordinate:'),
+                        dcc.Input(type='number', value=2, style={'width': '25%'}),
+                    ], className='x-coord-input'),
+                    html.Div([
+                        html.H5('Y-Coordinate:'),
+                        dcc.Input(type='number', value=3, style={'width': '25%'}),
+                    ], className='y-coord-input'),
+                    html.Div([
+                        html.H5('Show 3D:', className='show-3d-text'),
+                        daq.BooleanSwitch(on=False, className='toggle-3d'),
+                    ], className='show-3d-toggle'),          
+                    html.Div([
+                        html.H5('Gradient norm:'),
+                        html.H5('N/A')
+                    ], className='gradient-norm-container'),
+                    html.Button('Take step', className='step-btn')
+                    
+                ], className='toggles'),
             ], className='toggles-container'),
             html.Div([dcc.Graph(className='contour-plot', id='contour-plot')], className='contour-plot-container'),
         ], className='plot-toggles-container'),
@@ -111,7 +128,7 @@ def recalculate_contour(btn_click, colorscale, start, stop, step, smoothness, cu
             'tickfont_size': 12,
         }
         layout_2d = {
-            'margin': {'t': 30, 'b': 0, 'l': 0}, 
+            'margin': {'t': 30, 'b': 0, 'l': 0, 'r': 0, 'pad': 5}, 
             'plot_bgcolor': '#212329',
             'paper_bgcolor': '#212329',
             'font': {'color': 'white'},
