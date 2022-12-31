@@ -61,27 +61,36 @@ app.layout = html.Div([
                         dcc.Input(type='number', value=3, style={'width': '25%'}),
                     ], className='y-coord-input'),
                     html.Div([
-                        html.H5('Show 3D:', className='show-3d-text'),
-                        daq.BooleanSwitch(on=False, className='toggle-3d'),
-                    ], className='show-3d-toggle'),          
+                        html.H5('Descent direction:'),
+                        dcc.Markdown('N/A', className='latex-markdown')
+                        # dcc.Markdown('$$\\begin{bmatrix} ' + str(1+6) + ' \\\ ' + str(2) + ' \\end{bmatrix}$$', mathjax=True, className='latex-markdown')
+                    ], className='descent-direction-container'),
+                    html.Div([
+                        html.H5('Step size:'),
+                        dcc.Markdown('N/A', className='latex-markdown')
+                    ], className='step-size-container'),
                     html.Div([
                         html.H5('Gradient norm:'),
-                        html.H5('N/A')
+                        dcc.Markdown('N/A', className='latex-markdown')
+                        # dcc.Markdown('$$\\begin{bmatrix} ' + str(1+6) + ' \\\ ' + str(2) + ' \\end{bmatrix}$$', mathjax=True)
                     ], className='gradient-norm-container'),
-                    html.Button('Take step', className='step-btn')
+                    html.Div([
+                        html.H5('Show 3D:', className='show-3d-text'),
+                        daq.BooleanSwitch(on=False, className='toggle-3d'),
+                    ], className='show-3d-toggle'),
+                    html.Div([
+                        html.Button('Take step'),
+                        html.Button('Reset'),
+                    ], className='step-reset-container')
                     
                 ], className='toggles'),
             ], className='toggles-container'),
-            html.Div([dcc.Graph(className='contour-plot', id='contour-plot')], className='contour-plot-container'),
+            html.Div([
+                dls.ClimbingBox(dcc.Graph(className='contour-plot', id='contour-plot'), color='whitesmoke')
+            ], className='contour-plot-container'),
         ], className='plot-toggles-container'),
-        html.Div([
+        create_contour_settings(app)
 
-            create_contour_settings(app)
-
-
-            # html.Div([], className='left-side-settings'),
-            # html.Div([], className='right-side-settings')
-        ], className='settings-container')
     ], className='main-app-container'),
     html.Footer([
         'footer'
