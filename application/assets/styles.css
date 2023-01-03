@@ -413,6 +413,7 @@ button:hover {
 .sc-bxivhb, .gJuplL, .daq-booleanswitch--light__background {
     background: black !important;
     border: none !important;
+    width: 41px !important;
 }
 
 .sc-ifAKCX, .dlqMgb, .daq-booleanswitch--light__button {
@@ -423,7 +424,7 @@ button:hover {
 }
 
 .sc-ifAKCX:hover, .dlqMgb:hover, .daq-booleanswitch--light__button:hover {
-    cursor: pointer;
+    cursor: pointer !important;
 }
 .Select-value {
     background-color: white !important;
