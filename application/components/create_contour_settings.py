@@ -3,7 +3,7 @@ from dash import Dash, html, dcc
 def create_contour_settings(app: Dash) -> html.Div:
     return html.Div([
         
-        html.H3('Plot Settings', className='settings-title'),
+        html.H3('Plot Settings:', className='settings-title'),
         
         html.Div([
             html.Div('Colorscale:', className='setting-label'),

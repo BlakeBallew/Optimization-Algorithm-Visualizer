@@ -17,6 +17,7 @@ from components.create_header import create_header
 from components.create_expression_input import create_expression_input
 from components.create_main_application import create_main_application
 from components.create_contour_settings import create_contour_settings
+from components.create_footer import create_footer
 from functions.compute_zmatrix import compute_zmatrix
 from functions.compute_gradient import compute_gradient
 
@@ -24,18 +25,6 @@ app = Dash(
     __name__,
     suppress_callback_exceptions=True
 )
-
-# app.layout = html.Div([ 
-#     create_header(app),
-#     html.Div([
-#         create_expression_input(app),
-#         html.Div([
-#             create_main_application(app),
-#             create_contour_settings(app),
-#         ], className='app-body-container')
-#     ], className='app-container'),
-#     dcc.Store(id='plots', data = {})
-# ])
 
 app.layout = html.Div([
     create_header(app),
@@ -86,15 +75,17 @@ app.layout = html.Div([
                 ], className='toggles'),
             ], className='toggles-container'),
             html.Div([
-                dls.ClimbingBox(dcc.Graph(className='contour-plot', id='contour-plot'), color='whitesmoke')
+                dls.Roller([
+                    dcc.Graph(className='contour-plot', id='contour-plot')
+                ], color='whitesmoke', debounce=1000, show_initially=False)
             ], className='contour-plot-container'),
         ], className='plot-toggles-container'),
         create_contour_settings(app)
 
     ], className='main-app-container'),
-    html.Footer([
-        'footer'
-    ], className='footer-container'),
+
+    create_footer(app),
+
     dcc.Store(id='plots', data = {})       
 ], className='app-container')
 

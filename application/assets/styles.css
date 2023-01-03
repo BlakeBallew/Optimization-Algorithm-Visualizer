@@ -26,7 +26,7 @@ body {
     font-weight: lighter;
 }
 
-h2, h3, h4, h5, a {
+h2, h3, h4, h5, h6, a {
     font-weight: lighter;
     color: var(--main-text-color);
     text-decoration: none;
@@ -47,8 +47,8 @@ h2, h3, h4, h5, a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .header-container {
@@ -60,6 +60,10 @@ h2, h3, h4, h5, a {
     grid-template-rows: calc((100% - 20px) / 2) 20px calc((100% - 20px) / 2);
 }
 
+.title {
+    min-width: 406px;
+}
+
 .dummy-container {
     display: flex;
     justify-content: space-between;
@@ -68,15 +72,15 @@ h2, h3, h4, h5, a {
 
 .nav-links-container {
     display: flex;
-    justify-content: space-around;
-    width: 30%;
-    min-width: 300px;
+    justify-content: space-between;
+    width: 18%;
+    min-width: 150px;
 }
 
 .expression-input-container {
     grid-area: 2 / 2 / 2 / 2;
     display: inline-grid;
-    grid: calc(80% - 35px) 35px 20% / calc(100% - 140px) 10px 130px;
+    grid: calc(80% - 30px) 30px 20% / calc(100% - 140px) 10px 130px;
 }
 
 .expression-input {
@@ -224,11 +228,11 @@ button:hover {
 
 .settings-container {
     display: inline-grid;
-    grid: 10px 30px 3% 36px 3% 30px 3% 30px 3% 30px 6% 35px 3% 35px 5% / 7% 86% 7%;
+    grid: 15px 30px 3% 36px 3% 30px 3% 30px 3% 30px 6% 35px 3% 35px 5% / 7% 86% 7%;
     background-color: #1a1b20;
     height: 40%;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 /* EXPERIMENTAL SETTINGS STYLES START */
@@ -287,7 +291,8 @@ button:hover {
 }
 
 .step-slider {
-    width: 50%;
+    width: 40%;
+    padding-right: 0 !important;
 }
 
 
@@ -297,6 +302,26 @@ button:hover {
 .footer-container {
     background-color: black;
     grid-area: 4 / 1 / 4 / 4;
+    display: inline-grid;
+    grid: calc(55% - 7px) 14px calc(45% - 7px) / 21% 58% 21%;
+}
+
+.centered-text {
+    grid-area: 2 / 2 / 2 / 2;
+    display: flex;
+    justify-content: space-between;
+    font-style: italic;
+}
+
+.footer-rhs-links {
+    display: flex;
+    justify-content: space-between;
+    width: 28%;
+    min-width: 250px;
+}
+
+.footer-container h6 {
+    font-size: 0.8rem;
 }
 
 @media screen and (max-width: 650px) {
