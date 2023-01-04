@@ -32,7 +32,7 @@ def create_contour_settings(app: Dash) -> html.Div:
         ], className='toggle-step-container'),
 
         html.Div([
-            html.Div('Accuracy (requires recalculation):', className='setting-label'),
+            html.Div('Accuracy:', className='setting-label'),
             dcc.Slider(
                 min=5, max=50, step=5, value=20, 
                 id='accuracy-step-slider', 

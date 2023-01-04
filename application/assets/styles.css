@@ -303,7 +303,7 @@ button:hover {
     background-color: black;
     grid-area: 4 / 1 / 4 / 4;
     display: inline-grid;
-    grid: calc(55% - 7px) 14px calc(45% - 7px) / 21% 58% 21%;
+    grid: calc(50% - 7px) 14px calc(50% - 7px) / 21% 58% 21%;
 }
 
 .centered-text {

@@ -93,7 +93,7 @@ app.layout = html.Div([
             html.Div([
                 dls.Roller([
                     dcc.Graph(className='contour-plot', id='contour-plot')
-                ], color='whitesmoke', debounce=1000, show_initially=False)
+                ], color='whitesmoke', show_initially=False)
             ], className='contour-plot-container'),
         ], className='plot-toggles-container'),
         create_contour_settings(app)
@@ -102,14 +102,13 @@ app.layout = html.Div([
 
     create_footer(app),
 
-    dcc.Store(id='app-store', data = {
+    dcc.Store(id='app-store', storage_type='memory', data = {
         '2d_plot': None,
         '3d_plot': None,
         'toggle_3d': False,
         'descent_dir': None,
         'step_size': None,
         'gradient_norm': None,
-        'app_state': None,
     })       
 ], className='app-container', id='app')
 
@@ -125,7 +124,6 @@ Callbacks
         'app-store': Output(component_id='app-store', component_property='data'),
         'x-coordinate': Output(component_id='x-coordinate', component_property='value'),
         'y-coordinate': Output(component_id='y-coordinate', component_property='value'),
-        'app': Output(component_id='app', component_property='children'),
     },
     
     inputs = {
@@ -171,7 +169,6 @@ def update_store(recalc_btn,
         'app-store': no_update,
         'x-coordinate': no_update,
         'y-coordinate': no_update,
-        'app': no_update,
     }
     
     if current_plot is None and store['2d_plot'] is None:
@@ -247,7 +244,6 @@ def update_store(recalc_btn,
         store.update({
             '2d_plot': fig_2d.to_json(),
             '3d_plot': fig_3d.to_json(),
-            'app_state': json.dumps(app),
         })
         
         output.update({
@@ -255,11 +251,121 @@ def update_store(recalc_btn,
         })
         
         return output
-    
-    if current_plot is None and store['2d_plot'] is not None:
-        output.update({'app': json.loads(store['app_state'])})
+
+    # if current_plot is None and store['2d_plot'] is not None:
+    #     output.update({'app': json.loads(store['app_state'])})
+    #     return output
         
     if component_triggered == 'recalc-btn':
+        
+        x_range = current_plot['layout']['xaxis']['range']
+        y_range = current_plot['layout']['yaxis']['range']
+        # beale function: '(1.5-x+(x*y))^2+(2.25-x+(x*(y^2)))^2+(2.625-x+(x*(y^3)))^2'
+        # rosenbrock function: '(1-x)^2+100*(y-x^2)^2'
+        x_inputs, y_inputs, z = compute_zmatrix(expression, x_range, y_range, accuracy)
+        new_2d_fig = json.loads(store['2d_plot'])
+        new_3d_fig = json.loads(store['3d_plot'])
+        
+        new_2d_fig['data'][0]['x'], new_2d_fig['data'][0]['y'], new_2d_fig['data'][0]['z'] = list(x_inputs), list(y_inputs), z
+        new_3d_fig['data'][0]['x'], new_3d_fig['data'][0]['y'], new_3d_fig['data'][0]['z'] = list(x_inputs), list(y_inputs), z
+        
+        store.update({
+            '2d_plot': json.dumps(new_2d_fig),
+            '3d_plot': json.dumps(new_3d_fig),
+        })
+        
+        # compute_gradient(expression, x_range, y_range, 3, 1, accuracy)
+
+        output.update({'app-store': store})
+        
+        return output        
+        
+    if component_triggered == 'reset-btn':
+        pass
+    
+    if component_triggered == 'step-btn':
+        pass
+
+    if component_triggered == 'toggle-3d':
+        store.update({'toggle_3d': toggle_3d})
+        output.update({'app-store': store})
+        return output
+
+    if component_triggered == 'colorscale-dropdown':
+        new_2d_fig = json.loads(store['2d_plot'])
+        new_3d_fig = json.loads(store['3d_plot'])
+        
+        new_2d_fig['data'][0]['colorscale'] = colorscale
+        new_3d_fig['data'][0]['colorscale'] = colorscale
+        
+        store.update({
+            '2d_plot': json.dumps(new_2d_fig),
+            '3d_plot': json.dumps(new_3d_fig),
+        })
+        
+        output.update({'app-store': store})
+        
+        return output
+        
+    
+    if component_triggered == 'change-start':
+        new_2d_fig = json.loads(store['2d_plot'])
+
+        new_2d_fig['data'][0]['contours']['start'] = start
+
+        store.update({
+            '2d_plot': json.dumps(new_2d_fig),
+        })
+
+        output.update({'app-store': store})
+
+        return output
+
+
+    if component_triggered == 'change-stop':
+        new_2d_fig = json.loads(store['2d_plot'])
+
+        new_2d_fig['data'][0]['contours']['end'] = stop
+
+        store.update({
+            '2d_plot': json.dumps(new_2d_fig),
+        })
+
+        output.update({'app-store': store})
+
+        return output
+
+
+    if component_triggered == 'change-step':
+        new_2d_fig = json.loads(store['2d_plot'])
+
+        new_2d_fig['data'][0]['contours']['size'] = step
+
+        store.update({
+            '2d_plot': json.dumps(new_2d_fig),
+        })
+
+        output.update({'app-store': store})
+
+        return output
+
+    
+    if component_triggered == 'smoothing-step-slider':
+        new_2d_fig = json.loads(store['2d_plot'])
+
+        new_2d_fig['data'][0]['line']['smoothing'] = smoothness
+
+
+        store.update({
+            '2d_plot': json.dumps(new_2d_fig),
+        })
+
+        output.update({'app-store': store})
+
+        return output
+
+
+    if component_triggered == 'accuracy-step-slider':
         x_range = current_plot['layout']['xaxis']['range']
         y_range = current_plot['layout']['yaxis']['range']
         # beale function: '(1.5-x+(x*y))^2+(2.25-x+(x*(y^2)))^2+(2.625-x+(x*(y^3)))^2'
@@ -281,53 +387,7 @@ def update_store(recalc_btn,
 
         output.update({'app-store': store})
         
-        return output        
-        
-
-    
-    if component_triggered == 'reset-btn':
-        pass
-    
-    if component_triggered == 'step-btn':
-        pass
-
-    if component_triggered == 'toggle-3d':
-        store.update({'toggle_3d': toggle_3d})
-        output.update({'app-store': store})
-        return output
-
-    if component_triggered == 'colorscale-dropdown':
-        
-        new_3d_fig = json.loads(store['3d_plot'])
-        new_2d_fig = json.loads(store['2d_plot'])
-        
-        new_3d_fig['data'][0]['colorscale'] = colorscale
-        new_2d_fig['data'][0]['colorscale'] = colorscale
-        
-        store.update({
-            '2d_plot': json.dumps(new_2d_fig),
-            '3d_plot': json.dumps(new_3d_fig),
-        })
-        
-        output.update({'app-store': store})
-        
-        return output
-        
-    
-    if component_triggered == 'change-start':
-        pass
-
-    if component_triggered == 'change-stop':
-        pass
-
-    if component_triggered == 'change-step':
-        pass
-    
-    if component_triggered == 'smoothing-step-slider':
-        pass
-    
-    if component_triggered == 'accuracy-step-slider':
-        pass
+        return output 
 
 
 @app.callback(Output(component_id='contour-plot', component_property='figure'),
