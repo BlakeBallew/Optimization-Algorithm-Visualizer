@@ -310,7 +310,6 @@ button:hover {
     grid-area: 2 / 2 / 2 / 2;
     display: flex;
     justify-content: space-between;
-    font-style: italic;
 }
 
 .footer-rhs-links {
