@@ -342,7 +342,8 @@ def update_store(recalc_btn,
             '2d_plot': json.dumps(new_2d_fig),
         })
 
-        output.update({'app-store': store})
+        output.update({'app-store': store,
+                       'current_figure': new_2d_fig if not toggle_3d else no_update})
         return output
 
 
