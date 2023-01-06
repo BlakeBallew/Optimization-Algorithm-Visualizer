@@ -11,7 +11,6 @@ import json
 from dash import Dash, html, dcc, ctx
 from dash.dash import no_update
 import dash_loading_spinners as dls
-import dash_bootstrap_components as dbc
 import dash_daq as daq
 from dash.dependencies import Input, Output, State
 from dash.exceptions import PreventUpdate
@@ -28,10 +27,6 @@ dcc store scheme:
 {
     '2d_plot': dict,
     '2d_plot': dict,
-    'descent_dir': list[float],
-    'step_size': float,
-    'gradient_norm': float,
-    'app_state': everything,
 }
 need to update x and y coord in same callback
 """
@@ -40,61 +35,62 @@ need to update x and y coord in same callback
 
 app = Dash(
     __name__,
-    suppress_callback_exceptions=True
+    suppress_callback_exceptions=True,
 )
 
 app.layout = html.Div([
     create_header(app),
     html.Div([
-        dcc.Input(type='text', className='expression-input', value='x^2+y^2', id='user-expression'),
-        html.Button('Calculate', id='recalc-btn', className='calculate-btn')
+        html.Div([
+            dcc.Input(type='text', className='expression-input', value='x^2+y^2', id='user-expression'),
+            html.Button('Calculate', id='recalc-btn', className='calculate-btn')            
+        ], className='expression-input-flex')
     ],className='expression-input-container'),
+    html.Div(style={'height': '20px'}),
     html.Section([
         html.Div([
             html.Div([
-                html.Div([
                 
-                    dcc.Dropdown([
-                        'Gradient Descent',
-                        'BFGS',
-                    ], value='Gradient Descent', clearable=False, maxHeight=100, id='algo-dropdown'),
-                    html.Div([
-                        html.H5('X-Coordinate:'),
-                        dcc.Input(type='number', value=2, style={'width': '25%'}, id='x-coordinate'),
-                    ], className='x-coord-input'),
-                    html.Div([
-                        html.H5('Y-Coordinate:'),
-                        dcc.Input(type='number', value=3, style={'width': '25%'}, id='y-coordinate'),
-                    ], className='y-coord-input'),
-                    html.Div([
-                        html.H5('Descent direction:'),
-                        dcc.Markdown('N/A', className='latex-markdown')
-                        # dcc.Markdown('$$\\begin{bmatrix} ' + str(1+6) + ' \\\ ' + str(2) + ' \\end{bmatrix}$$', mathjax=True, className='latex-markdown')
-                    ], className='descent-direction-container'),
-                    html.Div([
-                        html.H5('Step size:'),
-                        dcc.Markdown('N/A', className='latex-markdown')
-                    ], className='step-size-container'),
-                    html.Div([
-                        html.H5('Gradient norm:'),
-                        dcc.Markdown('N/A', className='latex-markdown')
-                        # dcc.Markdown('$$\\begin{bmatrix} ' + str(1+6) + ' \\\ ' + str(2) + ' \\end{bmatrix}$$', mathjax=True)
-                    ], className='gradient-norm-container'),
-                    html.Div([
-                        html.H5('Show 3D:', className='show-3d-text'),
-                        daq.BooleanSwitch(on=False, className='toggle-3d', id='toggle-3d'),
-                    ], className='show-3d-toggle'),
-                    html.Div([
-                        html.Button('Take step', id='reset-btn'),
-                        html.Button('Reset', id='step-btn'),
-                    ], className='step-reset-container')
+                dcc.Dropdown([
+                    'Gradient Descent',
+                    'BFGS',
+                ], value='Gradient Descent', clearable=False, maxHeight=100, id='algo-dropdown'),
+                html.Div([
+                    html.H5('X-Coordinate:'),
+                    dcc.Input(type='number', value=2, style={'width': '25%'}, id='x-coordinate'),
+                ], className='x-coord-input'),
+                html.Div([
+                    html.H5('Y-Coordinate:'),
+                    dcc.Input(type='number', value=3, style={'width': '25%'}, id='y-coordinate'),
+                ], className='y-coord-input'),
+                html.Div([
+                    html.H5('Descent direction:'),
+                    dcc.Markdown('N/A', className='latex-markdown')
+                    # dcc.Markdown('$$\\begin{bmatrix} ' + str(1+6) + ' \\\ ' + str(2) + ' \\end{bmatrix}$$', mathjax=True, className='latex-markdown')
+                ], className='descent-direction-container'),
+                html.Div([
+                    html.H5('Step size:'),
+                    dcc.Markdown('N/A', className='latex-markdown')
+                ], className='step-size-container'),
+                html.Div([
+                    html.H5('Gradient norm:'),
+                    dcc.Markdown('N/A', className='latex-markdown')
+                    # dcc.Markdown('$$\\begin{bmatrix} ' + str(1+6) + ' \\\ ' + str(2) + ' \\end{bmatrix}$$', mathjax=True)
+                ], className='gradient-norm-container'),
+                html.Div([
+                    html.H5('Show 3D:', className='show-3d-text'),
+                    daq.BooleanSwitch(on=False, className='toggle-3d', id='toggle-3d'),
+                ], className='show-3d-toggle'),
+                html.Div([
+                    html.Button('Take step', id='reset-btn'),
+                    html.Button('Reset', id='step-btn'),
+                ], className='step-reset-container')
                     
-                ], className='toggles'),
             ], className='toggles-container'),
             html.Div([
-                dls.Roller([
+                dbc.Spinner([
                     dcc.Graph(className='contour-plot', id='contour-plot')
-                ], color='whitesmoke')
+                ], color='whitesmoke', size='md', delay_show=100)
             ], className='contour-plot-container'),
         ], className='plot-toggles-container'),
         create_contour_settings(app)
@@ -106,11 +102,7 @@ app.layout = html.Div([
     dcc.Store(id='app-store', storage_type='memory', data = {
         '2d_plot': None,
         '3d_plot': None,
-        'toggle_3d': False,
-        'descent_dir': None,
-        'step_size': None,
-        'gradient_norm': None,
-    })       
+    })
 ], className='app-container', id='app')
 
 
@@ -121,6 +113,7 @@ app.layout = html.Div([
 @app.callback(
     output = {
         'app-store': Output(component_id='app-store', component_property='data'),
+        'current_figure': Output(component_id='contour-plot', component_property='figure'),
         'x-coordinate': Output(component_id='x-coordinate', component_property='value'),
         'y-coordinate': Output(component_id='y-coordinate', component_property='value'),
     },
@@ -165,9 +158,13 @@ def update_store(recalc_btn,
                  current_plot):
     component_triggered = ctx.triggered_id
     output = {
-        'app-store': no_update,
+        'app-store': no_update, # <- will contain 2d and 3d plots
+        'current_figure': no_update,
         'x-coordinate': no_update,
         'y-coordinate': no_update,
+        # 'descent_dir': no_update,
+        # 'step_size': no_update,
+        # 'gradient_norm': no_update,
     }
     
     if current_plot is None and store['2d_plot'] is None:
@@ -247,7 +244,9 @@ def update_store(recalc_btn,
         
         output.update({
             'app-store': store,
+            'current_figure': fig_2d,
         })
+        
         
         return output
 
@@ -262,10 +261,11 @@ def update_store(recalc_btn,
         
         # case where user tries to recalculate a 3d plot
         if current_plot.get('layout', {}).get('xaxis', {}).get('range') == None:
-            return output
-        
-        x_range = current_plot['layout']['xaxis']['range']
-        y_range = current_plot['layout']['yaxis']['range']
+            x_range = json.loads(store['2d_plot'])['layout']['xaxis']['range']
+            y_range = json.loads(store['2d_plot'])['layout']['yaxis']['range']
+        else: 
+            x_range = current_plot['layout']['xaxis']['range']
+            y_range = current_plot['layout']['yaxis']['range']
         
         x_inputs, y_inputs, z = compute_zmatrix(expression, x_range, y_range, accuracy)
         
@@ -281,7 +281,8 @@ def update_store(recalc_btn,
         })
         
 
-        output.update({'app-store': store})
+        output.update({'app-store': store,
+                       'current_figure': new_3d_fig if toggle_3d else new_2d_fig})
         return output        
     
         
@@ -294,8 +295,14 @@ def update_store(recalc_btn,
 
 
     if component_triggered == 'toggle-3d':
-        store.update({'toggle_3d': toggle_3d})
-        output.update({'app-store': store})
+        if toggle_3d:
+            store.update({'2d_plot': json.dumps(current_plot)})
+            output.update({'app-store': store,
+                           'current_figure': json.loads(store['3d_plot'])})
+        else:
+            output.update({'current_figure': json.loads(store['2d_plot'])})
+        
+        
         return output
 
 
@@ -311,7 +318,8 @@ def update_store(recalc_btn,
             '3d_plot': json.dumps(new_3d_fig),
         })
         
-        output.update({'app-store': store})
+        output.update({'app-store': store,
+                       'current_figure': new_3d_fig if toggle_3d else new_2d_fig})
         return output
         
     
@@ -322,7 +330,8 @@ def update_store(recalc_btn,
         store.update({
             '2d_plot': json.dumps(new_2d_fig),
         })
-        output.update({'app-store': store})
+        output.update({'app-store': store,
+                       'current_figure': new_2d_fig if not toggle_3d else no_update})
         return output
 
 
@@ -344,7 +353,8 @@ def update_store(recalc_btn,
             '2d_plot': json.dumps(new_2d_fig),
         })
 
-        output.update({'app-store': store})
+        output.update({'app-store': store,
+                       'current_figure': new_2d_fig if not toggle_3d else no_update})
         return output
 
     
@@ -355,13 +365,20 @@ def update_store(recalc_btn,
             '2d_plot': json.dumps(new_2d_fig),
         })
 
-        output.update({'app-store': store})
+        output.update({'app-store': store,
+                       'current_figure': new_2d_fig if not toggle_3d else no_update})
         return output
 
 
     if component_triggered == 'accuracy-step-slider':
-        x_range = current_plot['layout']['xaxis']['range']
-        y_range = current_plot['layout']['yaxis']['range']
+        
+        # case where user tries to recalculate a 3d plot
+        if current_plot.get('layout', {}).get('xaxis', {}).get('range') == None:
+            x_range = json.loads(store['2d_plot'])['layout']['xaxis']['range']
+            y_range = json.loads(store['2d_plot'])['layout']['yaxis']['range']
+        else: 
+            x_range = current_plot['layout']['xaxis']['range']
+            y_range = current_plot['layout']['yaxis']['range']
         
         x_inputs, y_inputs, z = compute_zmatrix(expression, x_range, y_range, accuracy)
         
@@ -376,25 +393,26 @@ def update_store(recalc_btn,
             '3d_plot': json.dumps(new_3d_fig),
         })
         
-        output.update({'app-store': store})
+        output.update({'app-store': store,
+                       'current_figure': new_3d_fig if toggle_3d else new_2d_fig})
         return output 
 
 
 # Clientside callbacks
 
-app.clientside_callback(
-    """
-    function update_figure(store) {
-        if (store['toggle_3d']) {
-            return JSON.parse(store['3d_plot']);
-        } else {
-            return JSON.parse(store['2d_plot']);
-        }
-    }
-    """,
-    Output(component_id='contour-plot', component_property='figure'),
-    Input(component_id='app-store', component_property='data'),
-)
+# app.clientside_callback(
+#     """
+#     function update_figure(store) {
+#         if (store['toggle_3d']) {
+#             return JSON.parse(store['3d_plot']);
+#         } else {
+#             return JSON.parse(store['2d_plot']);
+#         }
+#     }
+#     """,
+#     Output(component_id='contour-plot', component_property='figure'),
+#     Input(component_id='app-store', component_property='data'),
+# )
 
 
 # app

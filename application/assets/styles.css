@@ -11,6 +11,7 @@ settings: #1a1b20
 
 */
 
+
 :root {
     --main-text-color: whitesmoke;
 }
@@ -32,32 +33,31 @@ h2, h3, h4, h5, h6, a {
     text-decoration: none;
 }
 
-.app-container {
+/* .app-container {
     width: 100vw;
-    height: 100vh;
+    height: 100vw;
     min-width: 300px;
-    display: inline-grid;
-    grid: 10% 15% 120% 7% / 20% 60% 20%;
     overflow: auto;
-}
+} */
 
 .main-app-container {
+    display: table;
+    margin: 0 auto;
+    width: 80%;
     background-color: #212329;
-    grid-area: 3 / 2 / 3 / 2;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
 
 .header-container {
     background-color: #212329;
-    grid-area: 1 / 1 / 1 / 4;
-    padding-left: 20%;
-    padding-right: 20%;
-    display: inline-grid;
-    grid-template-rows: calc((100% - 20px) / 2) 20px calc((100% - 20px) / 2);
+    padding-left: 10%;
+    padding-right: 10%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 70px;
 }
 
 .title {
@@ -67,7 +67,6 @@ h2, h3, h4, h5, h6, a {
 .dummy-container {
     display: flex;
     justify-content: space-between;
-    grid-row: 2 / 2;
 }
 
 .nav-links-container {
@@ -78,26 +77,33 @@ h2, h3, h4, h5, h6, a {
 }
 
 .expression-input-container {
-    grid-area: 2 / 2 / 2 / 2;
-    display: inline-grid;
-    grid: calc(80% - 30px) 30px 20% / calc(100% - 140px) 10px 130px;
+    width: 80%;
+    height: 30px;
+    display: table;
+    margin: 0 auto;
+}
+
+.expression-input-flex {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .expression-input {
-    grid-area: 2 / 1 / 2 / 1;
     border-radius: 5px;
     border: none;
     padding-left: 5px;
     font-size: 1rem;
+    width: calc(100% - 140px);
 }
 
 .calculate-btn {
-    grid-area: 2 / 3 / 2 / 3;
     border: none;
     border-radius: 5px;
     font-size: 0.95rem;
     color: var(--main-text-color);
     background-color: #2186F4;
+    width: 130px;
 }
 
 .calculate-btn:hover {
@@ -105,41 +111,40 @@ h2, h3, h4, h5, h6, a {
 }
 
 .plot-toggles-container {
-    display: inline-grid;
-    grid: 0% 90% 10% / 5% 30% 2% 60% 3%;
-    height: 60%;
-    /* border: 1px solid red; */
+    display: flex;
+    justify-content: space-between;
 }
 
 .toggles-container {
-    grid-area: 2 / 2 / 2 / 2;
-    display: inline-grid;
-    grid: 6% 89% 5% / 7% 86% 7%;
-    /* border: 1px solid red; */
-}
-
-.toggles {
-    grid-area: 2 / 2 / 2 / 2;
-    display: inline-grid;
-    grid: 2% 34px 5% 30px 5% 30px 5% 43px 5% 30px 5% 30px 3% 30px 4% 30px 5% / 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     background-color: #2e323b;
     border-radius: 7px;
-    padding: 10px;
+    padding: 20px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    margin-left: 50px;
+    margin-right: 60px; 
+    height: 40vw;
+    width: auto;
 }
 
 /* EXPERIMENTAL TOGGLES BEGINNING */
 
-#algo-dropdown {
-    grid-area: 2 / 1 / 2 / 2;
-}
+#algo-dropdown {}
 
-.toggles h5, .latex-markdown {
+.toggles-container h5, .latex-markdown {
     display: block;
     margin-top: auto;
     margin-bottom: 7px;
 }
 
-.toggles input {
+.toggles-container h5 {
+    font-size: 1rem;
+}
+
+.toggles-container input {
     background-color: #2e323b;
     color: var(--main-text-color);
     border-top: none;
@@ -149,44 +154,37 @@ h2, h3, h4, h5, h6, a {
 }
 
 .x-coord-input {
-    grid-area: 4 / 1 / 4 / 2;
     display: flex;
     justify-content: space-between;
 }
 
 .y-coord-input {
-    grid-area: 6 / 1 / 6 / 2;
     display: flex;
     justify-content: space-between;
 }
 
 .descent-direction-container {
-    grid-area: 8 / 1 / 8 / 2;
     display: flex;
     justify-content: space-between;
 }
 
 .step-size-container {
-    grid-area: 10 / 1 / 10 / 2;
     display: flex;
     justify-content: space-between;
 }
 
 .gradient-norm-container {
-    grid-area: 12 / 1 / 12 / 2;
     display: flex;
     justify-content: space-between;
 }
 
 .show-3d-toggle {
-    grid-area: 14 / 1 / 14 / 2;
     display: flex;
     justify-content: space-between;
 }
 
 .show-3d-text {
-    line-height: 35px;
-    height: 100%;
+    line-height: 10px;
 }
 
 .toggle-3d {
@@ -197,7 +195,6 @@ h2, h3, h4, h5, h6, a {
 
 
 .step-reset-container {
-    grid-area: 16 / 1 / 16 / 2;
     display: flex;
     justify-content: space-between;
 }
@@ -208,6 +205,7 @@ h2, h3, h4, h5, h6, a {
     border: 1px solid var(--main-text-color);
     border-radius: 5px;
     width: 45%;
+    height: 25px;
 }
 
 button:hover {
@@ -218,7 +216,13 @@ button:hover {
 
 
 .contour-plot-container {
-    grid-area: 2 / 4 / 2 / 4;
+    width: 50vw;
+    height: auto;
+}
+
+#app > section > div.plot-toggles-container > div.contour-plot-container > div {
+    height: 100% !important;
+    width: 100% !important;
 }
 
 .contour-plot {
@@ -227,10 +231,11 @@ button:hover {
 }
 
 .settings-container {
-    display: inline-grid;
-    grid: 15px 30px 3% 36px 3% 30px 3% 30px 3% 30px 6% 35px 3% 35px 5% / 7% 86% 7%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     background-color: #1a1b20;
-    height: 40%;
+    height: 300px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
@@ -238,13 +243,12 @@ button:hover {
 /* EXPERIMENTAL SETTINGS STYLES START */
 
 .settings-title {
-    grid-area: 2 / 2 / 2 / 3;
+    padding-left: 7%;
 }
 
 .colorscale-container {
     display: flex;
     justify-content: space-between;
-    grid-area: 4 / 2 / 4 / 3;
 }
 
 #colorscale-dropdown {
@@ -260,34 +264,11 @@ button:hover {
     border-bottom: 1px solid var(--main-text-color);
 }
 
-.toggle-start-container {
+.settings-container > div {
     display: flex;
     justify-content: space-between;
-    grid-area: 6 / 2 / 6 / 3;
-}
-
-.toggle-stop-container {
-    display: flex;
-    justify-content: space-between;
-    grid-area: 8 / 2 / 8 / 3;
-}
-
-.toggle-step-container {
-    display: flex;
-    justify-content: space-between;
-    grid-area: 10 / 2 / 10 / 3;
-}
-
-.accuracy-container {
-    display: flex;
-    justify-content: space-between;
-    grid-area: 12 / 2 / 12 / 3;
-}
-
-.smoothing-container {
-    display: flex;
-    justify-content: space-between;
-    grid-area: 14 / 2 / 14 / 3;
+    padding-left: 4%;
+    padding-right: 4%;
 }
 
 .step-slider {
@@ -295,19 +276,14 @@ button:hover {
     padding-right: 0 !important;
 }
 
-
 /* EXPERIMENTAL SETTINGS STYLES END */
 
 
 .footer-container {
     background-color: black;
-    grid-area: 4 / 1 / 4 / 4;
-    display: inline-grid;
-    grid: calc(50% - 7px) 14px calc(50% - 7px) / 21% 58% 21%;
 }
 
 .centered-text {
-    grid-area: 2 / 2 / 2 / 2;
     display: flex;
     justify-content: space-between;
 }
@@ -323,50 +299,6 @@ button:hover {
     font-size: 0.8rem;
 }
 
-@media screen and (max-width: 650px) {
-    
-    .app-container {
-        grid: 10% 20% 200% 20% / 0% 100% 0%;
-    }
-    
-    .expression-input-container {
-        display: inline-grid;
-        grid: calc(85% - 80px) 35px 5px 35px 15% / 100%;
-    }    
-
-    .expression-input {
-        grid-area: 2 / 1 / 2 / 1;
-    }
-    
-    .calculate-btn {
-        grid-area: 4 / 1 / 4 / 1;
-    }
-
-    .plot-toggles-container {
-        grid: 5% 40% 10% 40% 5% / 10% 80% 10%;
-    }
-    
-    .toggles-container {
-        grid-area: 2 / 2 / 2 / 2;
-    }
-    
-    .contour-plot-container {
-        grid-area: 4 / 2 / 4 / 2;
-    }
-
-    .settings-container {
-        grid: 5% 40% 10% 40% 5% / 10% 80% 10%;
-    }
-    
-    .left-side-settings {
-        grid-area: 2 / 2 / 2 / 2;
-    }
-    
-    .right-side-settings {
-        grid-area: 4 / 2 / 4 / 2;
-    }
-
-}
 
 /* OVERRIDING BUILT-IN DCC CLASSES */
 
@@ -449,4 +381,40 @@ button:hover {
 .Select-menu-outer {
     color: black !important;
     border: none !important;
+}
+
+/* 
+SOURCE: https://github.com/twbs/bootstrap/blob/main/dist/css/bootstrap.css 
+*/
+
+.spinner-border {
+    display: inline-block;
+    width: var(--bs-spinner-width);
+    height: var(--bs-spinner-height);
+    vertical-align: var(--bs-spinner-vertical-align);
+    border-radius: 50%;
+    animation: var(--bs-spinner-animation-speed) linear infinite var(--bs-spinner-animation-name);
+}
+
+@keyframes spinner-border {
+    to {
+      transform: rotate(360deg) /* rtl:ignore */;
+    }
+}
+
+.spinner-border {
+    --bs-spinner-width: 2rem;
+    --bs-spinner-height: 2rem;
+    --bs-spinner-vertical-align: -0.125em;
+    --bs-spinner-border-width: 0.25em;
+    --bs-spinner-animation-speed: 0.75s;
+    --bs-spinner-animation-name: spinner-border;
+    border: var(--bs-spinner-border-width) solid currentcolor;
+    border-right-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .spinner-border {
+      --bs-spinner-animation-speed: 1.5s;
+    }
 }
