@@ -19,7 +19,8 @@ def add_3d_vector(x: list[int], y: list[int], z: list[int], old_fig: dict) -> go
         y=y_lines,
         z=z_lines,
         mode='lines',
-        line = dict(width = 2, color = 'rgb(255, 0,0)')
+        line = dict(width = 2, color = 'rgb(255, 0,0)'),
+        showlegend=False
     )
 
     new_fig = go.Figure(data = old_fig['data'],

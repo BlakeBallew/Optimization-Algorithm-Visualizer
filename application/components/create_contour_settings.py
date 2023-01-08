@@ -1,9 +1,11 @@
 from dash import Dash, html, dcc
+import dash_bootstrap_components as dbc
 
 def create_contour_settings(app: Dash) -> html.Div:
     return html.Div([
         
-        html.H3('Plot Settings:', className='settings-title'),
+
+        html.Div(html.H3('Plot Settings:')),
         
         html.Div([
             html.Div('Colorscale:', className='setting-label'),
@@ -15,21 +17,6 @@ def create_contour_settings(app: Dash) -> html.Div:
                     'Red Blue',
                 ], value='Electric', clearable=False, maxHeight=100, id='colorscale-dropdown'),            
         ], className='colorscale-container'),
-
-        html.Div([
-            html.Div('Start:'),
-            dcc.Input(type='number', value=0, id='change-start')
-        ], className='toggle-start-container'),
-
-        html.Div([
-            html.Div('Stop:'),
-            dcc.Input(type='number', value=50, id='change-stop')
-        ], className='toggle-stop-container'),
-
-        html.Div([
-            html.Div('Step:'),
-            dcc.Input(type='number', value=5, id='change-step')
-        ], className='toggle-step-container'),
 
         html.Div([
             html.Div('Accuracy:', className='setting-label'),
@@ -47,6 +34,25 @@ def create_contour_settings(app: Dash) -> html.Div:
                 id='smoothing-step-slider', 
                 className='step-slider'
             ),            
-        ], className='smoothing-container'),        
+        ], className='smoothing-container'), 
+
+        html.Div([
+            html.Div('Start:'),
+            dcc.Input(type='number', value=0, id='change-start')
+        ], className='toggle-start-container'),
+
+        html.Div([
+            html.Div('Stop:'),
+            dcc.Input(type='number', value=50, id='change-stop')
+        ], className='toggle-stop-container'),
+
+        html.Div([
+            html.Div('Step:', id='step-label'),
+            dcc.Input(type='number', value=5, id='change-step')
+        ], className='toggle-step-container'),
+        html.Div([
+            html.Div(),
+            html.Button('Apply Changes', id='apply-changes-btn')
+        ])
 
     ], className='settings-container')

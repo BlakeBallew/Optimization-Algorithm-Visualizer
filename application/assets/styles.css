@@ -110,6 +110,16 @@ h2, h3, h4, h5, h6, a {
     cursor: pointer;
 }
 
+#error-display {
+    padding-top: 5px;
+    height: 30px;
+    width: 78%;
+    max-width: 990px;
+    display: table;
+    margin: 0 auto;
+    color: #FF4D4D;
+}
+
 .plot-toggles-container {
     width: 100%;
     height: 40vw;
@@ -140,6 +150,23 @@ h2, h3, h4, h5, h6, a {
     display: block;
     margin-top: auto;
     margin-bottom: 7px;
+}
+
+.descent-direction-container {
+    position: relative;
+    height: 55px;
+}
+
+.descent-direction-container > h5 {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#descent-direction {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .toggles-container h5 {
@@ -204,18 +231,25 @@ button:hover {
 .settings-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-around;
     background-color: #1a1b20;
-    height: 300px;
+    height: 400px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    padding-bottom: 10px;
 }
 
 /* EXPERIMENTAL SETTINGS STYLES START */
 
-.settings-title {
-    padding-left: 7%;
+#apply-changes-btn {
+    background-color: #1a1b20;
+    color: var(--main-text-color);
+    border: 1px solid var(--main-text-color);
+    border-radius: 5px;
+    width: 25%;
+    height: 30px;
 }
+
 
 .colorscale-container {
     display: flex;
@@ -400,6 +434,7 @@ SOURCE: https://github.com/twbs/bootstrap/blob/main/dist/css/bootstrap.css
     }
 }
 
+
 @media screen and (max-width: 950px) {
     
     .expression-input-flex {
@@ -439,6 +474,10 @@ SOURCE: https://github.com/twbs/bootstrap/blob/main/dist/css/bootstrap.css
         margin-right: 10px;
         margin-bottom: 50px;
     }
+
+    #apply-changes-btn {
+        width: 40%;
+    }
 }
 
 @media screen and (max-width: 730px) {
@@ -455,13 +494,17 @@ SOURCE: https://github.com/twbs/bootstrap/blob/main/dist/css/bootstrap.css
         justify-content: center;
     } 
 
-    .plot-toggles-container {
-        height: 700px;
-    }
-    
     .contour-plot-container {
         height: 80vw;
         margin-bottom: 30px;
+    }
+
+    #apply-changes-btn {
+        width: 100%;
+    }
+
+    .step-slider {
+        width: 50%;
     }
 
     .centered-text {
