@@ -7,8 +7,8 @@ def create_header(app: Dash) -> html.Div:
                 html.H3('Contour Plot & Optimization Algorithm Visualizer', className='title')
             ]),
             html.Div([
-                html.H4('Usage Docs', className='header-nav-link'),
-                html.H4(html.A('Author', href='https://github.com/BlakeBallew', target='_blank'), className='header-nav-link')
+                html.H4('Usage Docs'),
+                html.H4(html.A('Author', href='https://github.com/BlakeBallew', target='_blank'))
             ], className='nav-links-container')       
         ], className='dummy-container')
     ], className='header-container')

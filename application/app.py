@@ -71,7 +71,6 @@ app.layout = html.Div([
                 html.Div([
                     html.H5('Descent direction:'),
                     dcc.Markdown('N/A', className='latex-markdown', id='descent-direction', mathjax=True)
-                    # dcc.Markdown('$$\\begin{bmatrix} ' + str(1+6) + ' \\\ ' + str(2) + ' \\end{bmatrix}$$', mathjax=True, className='latex-markdown')
                 ], className='descent-direction-container'),
                 html.Div([
                     html.H5('Step size:'),
@@ -80,7 +79,6 @@ app.layout = html.Div([
                 html.Div([
                     html.H5('Gradient norm:'),
                     dcc.Markdown('N/A', className='latex-markdown', id='gradient-norm')
-                    # dcc.Markdown('$$\\begin{bmatrix} ' + str(1+6) + ' \\\ ' + str(2) + ' \\end{bmatrix}$$', mathjax=True)
                 ], className='gradient-norm-container'),
                 html.Div([
                     html.H5('Show 3D:', className='show-3d-text'),

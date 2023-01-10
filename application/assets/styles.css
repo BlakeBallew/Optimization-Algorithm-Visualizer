@@ -57,10 +57,6 @@ h2, h3, h4, h5, h6, a {
     margin-bottom: 70px;
 }
 
-/* .title {
-    min-width: 406px;
-} */
-
 .dummy-container {
     display: flex;
     justify-content: space-between;
@@ -73,6 +69,21 @@ h2, h3, h4, h5, h6, a {
     justify-content: space-between;
     width: 18%;
     min-width: 150px;
+}
+
+.more-projects-link {
+    min-width: 130px;
+}
+
+.more-projects-link:before {
+    content: "";
+    display: block;
+    width: 16px;
+    height: 16px;
+    float: left;
+    margin: 0 6px 0 0;
+    background: url("github_icon_white.png") no-repeat;
+    background-size: 100% 100%;
 }
 
 .expression-input-container {
