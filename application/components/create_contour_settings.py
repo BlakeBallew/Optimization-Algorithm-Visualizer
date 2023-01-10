@@ -51,7 +51,7 @@ def create_contour_settings(app: Dash) -> html.Div:
             dcc.Input(type='number', value=5, id='change-step')
         ], className='toggle-step-container'),
         html.Div([
-            html.Div(),
+            html.Div(), # <- quick fix to shove #apply-changes-btn to the right
             html.Button('Apply Changes', id='apply-changes-btn')
         ])
 

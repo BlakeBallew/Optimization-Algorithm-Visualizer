@@ -25,6 +25,7 @@ from functions.add_2d_vector import add_2d_vector
 from functions.add_3d_vector import add_3d_vector
 from functions.string_eval import NumericStringParser
 from functions.armijo import armijo_search
+from functions.update_BFGS import update_BFGS
 
 """
 dcc store scheme:
@@ -106,6 +107,7 @@ app.layout = html.Div([
     dcc.Store(id='app-store', storage_type='memory', data = {
         '2d_plot': None,
         '3d_plot': None,
+        'hessian_matrix_approx': json.dumps(np.identity(2).tolist())
     })
 ], className='app-container', id='app')
 
@@ -145,7 +147,8 @@ app.layout = html.Div([
         'stop': State(component_id='change-stop', component_property='value'), 
         'step': State(component_id='change-step', component_property='value'), 
         'smoothness': State(component_id='smoothing-step-slider', component_property='value'), 
-        'accuracy': State(component_id='accuracy-step-slider', component_property='value'),         
+        'accuracy': State(component_id='accuracy-step-slider', component_property='value'),
+        'selected_algorithm': State(component_id='algo-dropdown', component_property='value'),     
     }
 )
 def update_store(recalc_btn, 
@@ -163,7 +166,8 @@ def update_store(recalc_btn,
                  stop,
                  step,
                  smoothness,
-                 accuracy):
+                 accuracy,
+                 selected_algorithm):
     component_triggered = ctx.triggered_id
     output = {
         'app-store': no_update, # <- will contain 2d and 3d plots
@@ -341,38 +345,60 @@ def update_store(recalc_btn,
     
     
     if component_triggered == 'step-btn':
-
         delta_y, delta_x = compute_gradient(expression, x_coord, y_coord)
-
-        # alpha, _, _, new_fval, old_fval, _ = line_search(f=func, 
-        #                                                  myfprime=grad, 
-        #                                                  xk=np.array([x_coord, y_coord]), 
-        #                                                  pk=np.array([delta_x, delta_y]), 
-        #                                                  maxiter=30)
-
         old_fval = func(0, np.array([0, 0]))
-        alpha = armijo_search(np.array([delta_x, delta_y]),
-                              old_fval,
-                              np.array([-delta_x, -delta_y]),
-                              func)
-        new_fval = func(alpha, np.array([delta_x, delta_y]))
 
-        new_x, new_y = x_coord+alpha*delta_x, y_coord+alpha*delta_y
+        if selected_algorithm == 'Gradient Descent':
+            alpha = armijo_search(np.array([delta_x, delta_y]),
+                                  old_fval,
+                                  np.array([-delta_x, -delta_y]),
+                                  func)
+            new_fval = func(alpha, np.array([delta_x, delta_y]))
 
-        fig_2d_with_vector = add_2d_vector([x_coord, new_x], [y_coord, new_y], json.loads(store['2d_plot'])).to_json()
-        fig_3d_with_vector = add_3d_vector([x_coord, new_x], [y_coord, new_y], [old_fval, new_fval], json.loads(store['3d_plot'])).to_json()
-        store.update({'2d_plot': fig_2d_with_vector,
-                      '3d_plot': fig_3d_with_vector})
+            new_x, new_y = x_coord+alpha*delta_x, y_coord+alpha*delta_y
+
+            fig_2d_with_vector = add_2d_vector([x_coord, new_x], [y_coord, new_y], json.loads(store['2d_plot'])).to_json()
+            fig_3d_with_vector = add_3d_vector([x_coord, new_x], [y_coord, new_y], [old_fval, new_fval], json.loads(store['3d_plot'])).to_json()
+            store.update({'2d_plot': fig_2d_with_vector,
+                        '3d_plot': fig_3d_with_vector})
+            output.update({'descent_direction': '$$\\begin{bmatrix} ' + str(round(delta_x, 5)) + ' \\\ ' + str(round(delta_y, 5)) + ' \\end{bmatrix}$$'})
+                        
+      
+        if selected_algorithm == 'BFGS':
+            approx_hessian = np.array(json.loads(store['hessian_matrix_approx']))
+            numpy_gradient = np.array([-delta_x, -delta_y])
+            pk = -np.dot(approx_hessian, numpy_gradient)
+            alpha = armijo_search(pk,
+                                  old_fval,
+                                  numpy_gradient,
+                                  func)
+            old_pt = np.array([x_coord, y_coord])
+            old_gradient = numpy_gradient
+            new_x, new_y = x_coord+alpha*pk[0], y_coord+alpha*pk[1]
+            new_pt = np.array([new_x, new_y])
+            new_delta_y, new_delta_x = compute_gradient(expression, new_x, new_y)
+            new_gradient = np.array([-new_delta_x, -new_delta_y])
+            pts_delta = new_pt - old_pt
+            gradients_delta = new_gradient - old_gradient
+            new_approx_hessian = update_BFGS(approx_hessian, gradients_delta, pts_delta)
+            new_fval = func(alpha, np.array([pk[0], pk[1]]))
+
+            fig_2d_with_vector = add_2d_vector([x_coord, new_x], [y_coord, new_y], json.loads(store['2d_plot'])).to_json()
+            fig_3d_with_vector = add_3d_vector([x_coord, new_x], [y_coord, new_y], [old_fval, new_fval], json.loads(store['3d_plot'])).to_json()
+            store.update({'2d_plot': fig_2d_with_vector,
+                          '3d_plot': fig_3d_with_vector,
+                          'hessian_matrix_approx': json.dumps(new_approx_hessian.tolist())})
+            output.update({'descent_direction': '$$\\begin{bmatrix} ' + str(round(pk[0], 5)) + ' \\\ ' + str(round(pk[1], 5)) + ' \\end{bmatrix}$$'})
+
+
         output.update({'app-store': store,
-                       'current_figure': json.loads(fig_3d_with_vector) if toggle_3d else json.loads(fig_2d_with_vector),
-                       'x-coordinate': round(new_x, 5),
-                       'y-coordinate': round(new_y, 5),
-                       'descent_direction': '$$\\begin{bmatrix} ' + str(round(delta_x, 5)) + ' \\\ ' + str(round(delta_y, 5)) + ' \\end{bmatrix}$$',
-                       'step_size': str(round(alpha, 5)),
-                       'gradient_norm': str(round(np.linalg.norm(np.array([delta_x, delta_y])), 5))})
-        
-        
-        
+                        'current_figure': json.loads(fig_3d_with_vector) if toggle_3d else json.loads(fig_2d_with_vector),
+                        'x-coordinate': round(new_x, 5),
+                        'y-coordinate': round(new_y, 5),
+                        'step_size': str(round(alpha, 5)),
+                        'gradient_norm': str(round(np.linalg.norm(np.array([delta_x, delta_y])), 5))})
+
+
         return output
 
 

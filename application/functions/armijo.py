@@ -11,7 +11,7 @@ returns the value of a decided by the Armijo condition
 def armijo_search(desc_dir, y, grad, func):
     a = .4
     r = .6
-    c = .01    
+    c = .1 
 
     b=c*np.dot(grad, desc_dir)
     while(func(a, desc_dir)>y+a*b):
