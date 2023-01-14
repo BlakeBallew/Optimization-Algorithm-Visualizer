@@ -1,3 +1,4 @@
+from turtle import showturtle
 import plotly.graph_objects as go
 
 def add_3d_vector(x: list[int], y: list[int], z: list[int], old_fig: dict) -> go.Figure:
@@ -20,7 +21,7 @@ def add_3d_vector(x: list[int], y: list[int], z: list[int], old_fig: dict) -> go
         z=z_lines,
         mode='lines',
         line = dict(width = 2, color = 'rgb(255, 0,0)'),
-        showlegend=False
+        showlegend=False,
     )
 
     new_fig = go.Figure(data = old_fig['data'],

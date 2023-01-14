@@ -26,6 +26,7 @@ from functions.add_3d_vector import add_3d_vector
 from functions.string_eval import NumericStringParser
 from functions.armijo import armijo_search
 from functions.update_BFGS import update_BFGS
+from functions.compute_hessian import compute_hessian
 
 """
 dcc store scheme:
@@ -59,6 +60,7 @@ app.layout = html.Div([
                 dcc.Dropdown([
                     'Gradient Descent',
                     'BFGS',
+                    "Newton's Method",
                 ], value='Gradient Descent', clearable=False, maxHeight=100, id='algo-dropdown'),
                 html.Div([
                     html.H5('X-Coordinate:'),
@@ -149,7 +151,7 @@ app.layout = html.Div([
         'selected_algorithm': State(component_id='algo-dropdown', component_property='value'),     
     }
 )
-def update_store(recalc_btn, 
+def update_layout(recalc_btn, 
                  reset_btn,
                  step_btn,
                  toggle_3d,
@@ -185,7 +187,7 @@ def update_store(recalc_btn,
         return nsp.eval(ready_expression)
 
     if current_plot is None and store['2d_plot'] is None:
-        initial_x, initial_y, initial_z = compute_zmatrix('x^2+y^2', [-3, 5], [-3, 5], accuracy)
+        initial_x, initial_y, initial_z = compute_zmatrix(expression, [-3, 5], [-3, 5], accuracy)
         contours_2d = {
             'start': start,
             'end': stop,
@@ -342,7 +344,7 @@ def update_store(recalc_btn,
         return output
     
     
-    if component_triggered == 'step-btn':
+    if component_triggered == 'step-btn' or True:
         delta_y, delta_x = compute_gradient(expression, x_coord, y_coord)
         old_fval = func(0, np.array([0, 0]))
 
@@ -388,6 +390,20 @@ def update_store(recalc_btn,
                           'hessian_matrix_approx': json.dumps(new_approx_hessian.tolist())})
             output.update({'descent_direction': '$$\\begin{bmatrix} ' + str(round(pk[0], 5)) + ' \\\ ' + str(round(pk[1], 5)) + ' \\end{bmatrix}$$'})
 
+        if selected_algorithm == "Newton's Method":
+            grad = np.array([-delta_x, -delta_y])
+            pk = np.dot(compute_hessian(expression, x_coord, y_coord), grad)
+            current = np.array([x_coord, y_coord]) - pk
+            new_x, new_y = current[0], current[1]
+            ready_expression = expression.replace('x', str(new_x)).replace('y', str(new_y))
+            new_fval = nsp.eval(ready_expression)
+            fig_2d_with_vector = add_2d_vector([x_coord, new_x], [y_coord, new_y], json.loads(store['2d_plot'])).to_json()
+            fig_3d_with_vector = add_3d_vector([x_coord, new_x], [y_coord, new_y], [old_fval, new_fval], json.loads(store['3d_plot'])).to_json()
+            alpha = 1
+            store.update({'2d_plot': fig_2d_with_vector,
+                          '3d_plot': fig_3d_with_vector})
+            output.update({'descent_direction': '$$\\begin{bmatrix} ' + str(round(-pk[0], 5)) + ' \\\ ' + str(round(-pk[1], 5)) + ' \\end{bmatrix}$$'})
+    
 
         output.update({'app-store': store,
                         'current_figure': json.loads(fig_3d_with_vector) if toggle_3d else json.loads(fig_2d_with_vector),
